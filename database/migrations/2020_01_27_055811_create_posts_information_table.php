@@ -18,7 +18,7 @@ class CreatePostsInformationTable extends Migration
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('posts');
             $table->mediumText('description');
-            $table->string('slug');
+            $table->string('slug', 128);
             $table->timestamps();
         });
     }
