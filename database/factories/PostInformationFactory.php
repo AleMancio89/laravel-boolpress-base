@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(PostInformation::class, function (Faker $faker) {
     return [
-        'post_id' => $faker->numberBetween($min = 1, $max = 100),
+        'post_id' => $faker->unique()->numberBetween($min = 1, $max = 100),
         'description' => $faker->paragraph(),
         'slug' => $faker->slug(),
         'created_at' => $faker->date(),
