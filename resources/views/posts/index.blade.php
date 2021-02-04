@@ -1,42 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Posts</title>
+@extends('layouts.main')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-</head>
-<body>
+@section('title')
 
-
-
-    <div class="container">
-        <div class="row">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Titolo</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Descrizione</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($posts as $post)
-                    <tr>
-                        <th>{{ $post->title }}</th>
-                        <td>{{ $post->category->title }}</td>
-                        <td>{{ $post->postInformation->description }}</td>
-                    </tr>
+@section('content')
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Titolo</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Descrizione</th>
+                    <th scope="col">Tags</th>
+                    <th scope="col">Modifica</th>
+                    <th scope="col">Elimina</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($posts as $post)
+                <tr>
+                    <td>{{ $post->id }}</td>
+                    <td>{{ $post->title }}</td>
+                    <td>{{ $post->category->title }}</td>
+                    <td>{{ $post->postInformation->description }}</td>
+                    <td>
+                    @foreach ($post->tags as $tag)
+                        {{ '#' . $tag->name }}
+                        <br/>
                     @endforeach
-                </tbody>
-            </table>
-        </div>
-
+                    </td>
+                    <td>
+                        <a class="btn btn-primary bg-gradient" href="{{ route('posts.edit', $post) }}">Modifica</a>
+                    </td>
+                    <td>
+                        <form action="{{ route('posts.destroy', $post) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <input class ="btn btn-danger" value="Elimina" type="submit">
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-</body>
-</html>
+</div>
+@endsection

@@ -9,8 +9,6 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'category_id' => $faker->numberBetween($min = 1, $max = 10),
         'title' => $faker->sentence($nbWords = 4),
-        'author' => $faker->name(),
-        'updated_at' => $faker->date(),
-        'created_at' => $faker->date(),
+        'author' => $faker->name()
     ];
 });

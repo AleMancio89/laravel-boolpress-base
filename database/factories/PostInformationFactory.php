@@ -10,7 +10,5 @@ $factory->define(PostInformation::class, function (Faker $faker) {
         'post_id' => $faker->unique()->numberBetween($min = 1, $max = 100),
         'description' => $faker->paragraph(),
         'slug' => $faker->slug(),
-        'created_at' => $faker->date(),
-        'updated_at' => $faker->date()
     ];
 });

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use App\Post;
 use App\PostInformation;
+use App\Category;
 
-class PostsController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +31,9 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -40,7 +44,26 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        /* dd($data); */
+
+        $newPost = Post::firstOrCreate([
+            'title' => $data['title'],
+            'author' => $data['author'],
+            'category_id' => $data['category_id']
+        ]);
+        $newPost->save();
+
+        $newPostInfo = PostInformation::firstOrCreate([
+            'post_id' => $newPost->id,
+            'slug' => Str::slug($newPost->title),
+            'description' => $data['description']
+        ]);
+
+        $newPostInfo->save();
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -62,7 +85,10 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        $categories = Category::all();
+
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -72,9 +98,16 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+
+        $data = $request->all();
+
+        $post->update($data);
+
+        $post->postInformation->update($data);
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -83,8 +116,12 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+/*         $post->postInformation->delete();
+
+        $post->delete();
+
+        return redirect()->back(); */
     }
 }
