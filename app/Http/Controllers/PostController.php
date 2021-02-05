@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Post;
 use App\PostInformation;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -33,7 +34,9 @@ class PostController extends Controller
     {
         $categories = Category::all();
 
-        return view('posts.create', compact('categories'));
+        $tags = Tag::all();
+
+        return view('posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -63,6 +66,10 @@ class PostController extends Controller
 
         $newPostInfo->save();
 
+        foreach ($data['tags'] as $tagId) {
+            $newPost->tags()->attach($tagId);
+        }
+
         return redirect()->route('posts.index');
     }
 
@@ -87,8 +94,9 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('posts.edit', compact('post', 'categories'));
+        return view('posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -118,10 +126,13 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-/*         $post->postInformation->delete();
+
+        $post->tags()->detach();
+
+        $post->postInformation->delete();
 
         $post->delete();
 
-        return redirect()->back(); */
+        return redirect()->route('posts.index');
     }
 }

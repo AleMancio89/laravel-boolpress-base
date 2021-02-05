@@ -29,6 +29,18 @@
             <label class="form-label">Descrizione</label>
             <textarea class="form-control" type="text" name="description">{{ $post->postInformation->description }}</textarea>
         </div>
+        <p class="form-label">Seleziona i #tag</p>
+        @foreach ($tags as $tag)
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="tags[]" value="{{ $tag->id }}"
+            @foreach ($post->tags as $singleTag)
+                @if ($tag->id == $singleTag->id)
+                    checked
+                @endif
+            @endforeach>
+            <label class="form-check-label">{{ $tag->name }}</label>
+        </div>
+        @endforeach
         <button type="submit" class="btn btn-primary">Aggiorna</button>
     </form>
 </div>

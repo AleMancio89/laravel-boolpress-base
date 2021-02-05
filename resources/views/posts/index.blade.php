@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title')
+@section('title', 'Posts')
 
 @section('content')
 <div class="container">
@@ -26,7 +26,7 @@
                     <td>{{ $post->postInformation->description }}</td>
                     <td>
                     @foreach ($post->tags as $tag)
-                        {{ '#' . $tag->name }}
+                        <a href="{{ route('tags.show', $tag->id) }}">{{ '#' . $tag->name }}</a>
                         <br/>
                     @endforeach
                     </td>

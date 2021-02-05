@@ -29,7 +29,16 @@
             <label class="form-label">Descrizione</label>
             <textarea class="form-control" type="text" name="description"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Crea</button>
+        <p class="form-label">Seleziona i #tag</p>
+        @foreach ($tags as $tag)
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="tags[]" value="{{ $tag->id }}">
+            <label class="form-check-label">{{ $tag->name }}</label>
+        </div>
+        @endforeach
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Crea</button>
+        </div>
     </form>
 </div>
 
